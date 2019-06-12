@@ -3,6 +3,8 @@
 # Wrapper script for pgmodeler-cli, support default use-case:
 # Take model from STDIN, dump SQL to STDOUT.
 
+PGM=/opt/pgmodeler/bin/pgmodeler-cli
+
 test "$1" = "-h" || test "$1" = "--help" && {
 	echo "usage: docker run -i jwp3243/pgmodeler-export <model.dbm >model.sql";
 	echo "or: docker run jwp/pgmodeler-export pgmodeler-cli [flags]";
@@ -12,7 +14,7 @@ test "$1" = "-h" || test "$1" = "--help" && {
 infile=`mktemp`
 outfile=`mktemp`
 cat - > $infile
-pgmodeler-cli -if $infile -of $outfile -ef --pgsql-ver 11.0 1>&2
+$PGM -if $infile -of $outfile -ef --pgsql-ver 11.0 1>&2
 CODE=$?
 cat $outfile
 rm -f $infile $outfile
