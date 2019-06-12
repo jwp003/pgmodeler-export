@@ -20,7 +20,7 @@ RUN make install
 
 FROM alpine
 
-RUN apk add xvfb qt5-qtbase-x11 qt5-qtsvg libpq libxml2 mesa-dri-swrast
+RUN apk add qt5-qtbase-x11 qt5-qtsvg libpq libxml2
 
 COPY --from=0 /opt/pgmodeler /opt/pgmodeler
 RUN ln -s /opt/pgmodeler/bin/pgmodeler-cli /bin/
@@ -31,10 +31,9 @@ RUN cp /opt/pgmodeler/share/pgmodeler/conf/pattern-highlight.conf /root/.config/
 
 RUN mkdir -p /tmp/pgmodeler
 ENV XDG_RUNTIME_DIR /tmp/pgmodeler
+ENV QT_QPA_PLATFORM offscreen
 
 WORKDIR /
-COPY ./xvfb-run /bin/
 COPY ./pgmodeler-export /bin/
-ENTRYPOINT ["xvfb-run", "--"]
 CMD pgmodeler-export
 
